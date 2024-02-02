@@ -1,6 +1,5 @@
 ﻿
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ProgrammeringOne.user {
     internal class UserSaving {
@@ -10,10 +9,6 @@ namespace ProgrammeringOne.user {
 
         public static void SaveUser(User user) {
             try {
-                JsonSerializerOptions options = new JsonSerializerOptions {
-                    WriteIndented = true,
-                    Converters = { new ListStringConverter() }
-                };
                 string json = JsonSerializer.Serialize(user);
                 string path = GetPath(user.Username);
                 File.WriteAllText(path, json);
@@ -25,9 +20,6 @@ namespace ProgrammeringOne.user {
 
         public static User? LoadUser(string username) {
             try {
-                JsonSerializerOptions options = new JsonSerializerOptions {
-                    Converters = { new ListStringConverter() }
-                };
 
                 string path = GetPath(username);
                 if (!File.Exists(path)) {
@@ -52,28 +44,5 @@ namespace ProgrammeringOne.user {
                     return null;
                 } 
             }
-
-        internal class ListStringConverter : JsonConverter<List<string>> {
-            public override List<string> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
-                if (reader.TokenType == JsonTokenType.StartArray) {
-                    List<string> result = new List<string>();
-                    while (reader.Read() && reader.TokenType != JsonTokenType.EndArray) {
-                        if (reader.TokenType == JsonTokenType.String) {
-                            result.Add(reader.GetString() ?? string.Empty);
-                        }
-                    }
-                    return result;
-                }
-                return [];
-            }
-
-            public override void Write(Utf8JsonWriter writer, List<string> value, JsonSerializerOptions options) {
-                writer.WriteStartArray();
-                foreach (string item in value) {
-                    writer.WriteStringValue(item);
-                }
-                writer.WriteEndArray();
-            }
-        }
     }
 }

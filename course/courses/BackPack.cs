@@ -7,6 +7,7 @@ namespace Programmering_1.course.courses {
         private readonly int maxItems = 10;
 
         public override void Start() {
+            Clear();
             WriteLine("Välkommen till ryggsäcken " + user.Username + "!");
             NewLine();
             Option[] options = [
