@@ -38,7 +38,7 @@ namespace Programmering_1.course.courses {
                 Restart();
                 return;
             }
-            Launch(selectedCourse);
+            selectedCourse.Start();
         }
 
         public override void Stop() {

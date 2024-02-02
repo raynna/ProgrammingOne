@@ -36,7 +36,7 @@ namespace Programmering_1.course.courses {
                 return;
             }
             if (selectedOption.Course != null) {
-                Launch(selectedOption.Course);
+                selectedOption.Course.Start();
                 return;
             }
             if (selectedOption.Action != null) {
@@ -51,16 +51,16 @@ namespace Programmering_1.course.courses {
         }
 
         private void ShowItems() {
-            if (User?.BackPackItems.Count == 0) {
+            if (user.BackPackItems.Count == 0) {
                 Result(true, "Du har inga föremål i din ryggsäck!");
                 Restart();
                 return;
             }
             Clear();
-            string response = "Du har " + User?.BackPackItems.Count + " föremål i din ryggsäck: ";
+            string response = "Du har " + user.BackPackItems.Count + " föremål i din ryggsäck: ";
             WriteLine(response);
-            List<string>? list = User?.BackPackItems;
-            for (int i = 0; i < list?.Count; i++) {
+            List<string> list = user.BackPackItems;
+            for (int i = 0; i < list.Count; i++) {
                 string? item = list[i];
                 WriteLine(item.ToString());
             }
@@ -71,7 +71,7 @@ namespace Programmering_1.course.courses {
         }
 
         private void AddItem() {
-            if (User?.BackPackItems.Count >= maxItems) {
+            if (user.BackPackItems.Count >= maxItems) {
                 Result(true, "Din ryggsäck är full.");
                 Restart();
                 return;
@@ -84,14 +84,14 @@ namespace Programmering_1.course.courses {
                 AddItem();
                 return;
             }
-            User?.AddItem(itemToAdd);
-            User?.SaveUser();
+            user.AddItem(itemToAdd);
+            user.SaveUser();
             Result(true, "Du har lagt till > " + itemToAdd + " < i din ryggsäck.");
             Restart();
         }
 
         private void ClearItems() {
-            if (User?.BackPackItems.Count == 0) {
+            if (user.BackPackItems.Count == 0) {
                 Result(true, "Du har inga föremål att rensa i din ryggsäck!");
                 Restart();
                 return;
@@ -116,8 +116,8 @@ namespace Programmering_1.course.courses {
                 if (option.Id.ToString() == keyPress.ToString()) {
                     if (option.Id == 1) {
                         Clear();
-                        User?.ClearItems();
-                        User?.SaveUser();
+                        user.ClearItems();
+                        user.SaveUser();
                         Result(true, "Du har nu rensat din ryggsäck.");
                         Restart();
                     }
